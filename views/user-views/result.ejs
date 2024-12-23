@@ -1,0 +1,17 @@
+<%- include('./partials/header') %>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Session Report</h1>
+        <div class="bg-light p-4 rounded">
+            <pre id="sessionReport" class="bg-white p-3"><%= report %></pre>
+            <button id="copyBtn" class="btn btn-success mt-3">Copy to Clipboard</button>
+        </div>
+    </div>
+    <%- include('./partials/footer') %>
+        <script>
+            document.getElementById('copyBtn').addEventListener('click', () => {
+                const report = document.getElementById('sessionReport').innerText;
+                navigator.clipboard.writeText(report).then(() => {
+                    alert('Report copied to clipboard!');
+                });
+            });
+        </script>
