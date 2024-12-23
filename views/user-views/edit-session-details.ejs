@@ -117,8 +117,11 @@
                         </div>`;
                             e.target.insertAdjacentHTML("beforebegin", newInput);
                         } else if (e.target.matches(removeButtonClass)) {
-                            if (e.target.parentElement.length !== 0) {
-                                e.target.parentElement.remove();
+                            const inputs = document.querySelectorAll(`${containerId} .input-group`);
+                            if (inputs.length > 1) { // Prevent removal if only one input is left
+                                e.target.closest(".input-group").remove();
+                            } else {
+                                alert(`At least one ${type} is required.`);
                             }
                         }
                     });

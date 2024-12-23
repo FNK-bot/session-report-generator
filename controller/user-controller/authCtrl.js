@@ -30,7 +30,7 @@ const googleAuth = async (req, res) => {
 }
 
 const logout = async (req, res) => {
-    req.session.distroy()
+    req.session.destroy()
     res.redirect('/')
 }
 

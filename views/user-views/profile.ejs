@@ -14,26 +14,36 @@
                                 aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form id="editUserForm" action="edit-user" method="post">
+                            <form id="editUserForm" action="edit-user" method="post" novalidate>
                                 <div class="mb-3">
                                     <label for="userName" class="form-label">Name</label>
                                     <input type="text" class="form-control shadow-sm" id="userName" name="userName"
-                                        value="<%= user.userName %>" required>
+                                        value="<%= user.userName %>" required minlength="2">
+                                    <div class="invalid-feedback">
+                                        Please enter a valid name (at least 2 characters).
+                                    </div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="email" class="form-label">Email</label>
                                     <input type="email" class="form-control shadow-sm" id="email" name="email"
                                         value="<%= user.email %>" required>
+                                    <div class="invalid-feedback">
+                                        Please enter a valid email address.
+                                    </div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="batch" class="form-label">Batch</label>
                                     <input type="text" class="form-control shadow-sm" id="batch" name="batch"
                                         value="<%= user?.batch %>">
+                                    <div class="invalid-feedback">
+                                        Please enter a valid batch.
+                                    </div>
                                 </div>
                                 <div class="text-end">
                                     <button type="submit" class="btn btn-primary shadow">Update</button>
                                 </div>
                             </form>
+
                         </div>
                     </div>
                 </div>
@@ -59,23 +69,33 @@
                         </div>
                     </div>
 
-                    <!-- Action Buttons -->
-                    <div class="d-flex justify-content-start gap-3 mt-4">
-                        <button type="button" class="btn btn-primary d-flex align-items-center" data-bs-toggle="modal"
-                            data-bs-target="#editUserModal">
+                    <div class="d-flex flex-wrap gap-3 mt-4">
+                        <button type="button" class="btn btn-primary d-flex align-items-center  w-md-auto"
+                            data-bs-toggle="modal" data-bs-target="#editUserModal">
                             <i class="bi bi-pencil me-2"></i>Edit User Details
                         </button>
 
-                        <a href="/edit-session-details" class="btn btn-success d-flex align-items-center">
+                        <a href="/edit-session-details" class="btn btn-success d-flex align-items-center w-md-auto">
                             <i class="bi bi-gear me-2"></i>Edit Session Details
                         </a>
 
-                        <a href="/logout" class="btn btn-danger d-flex align-items-center">
+                        <a href="/logout" class="btn btn-danger d-flex align-items-center  w-md-auto">
                             <i class="bi bi-box-arrow-right me-2"></i>Logout
                         </a>
                     </div>
+
                 </div>
             </div>
         </div>
 
         <%- include('./partials/footer') %>
+            <script>
+                document.getElementById('editUserForm').addEventListener('submit', (event) => {
+                    const form = event.target;
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                });
+            </script>

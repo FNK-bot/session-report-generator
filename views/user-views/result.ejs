@@ -8,7 +8,7 @@
                 style="word-wrap: break-word; white-space: pre-wrap;"><%= report %></pre>
             <div class="d-flex flex-column flex-md-row justify-content-between mt-3 gap-2">
                 <button id="copyBtn" class="btn btn-success w-100">Copy to Clipboard</button>
-                <!-- <button id="shareBtn" class="btn btn-primary w-100">Share via WhatsApp</button> -->
+                <button id="shareBtn" class="btn btn-primary w-100">Share via WhatsApp</button>
             </div>
         </div>
     </div>
@@ -78,7 +78,7 @@
                 const report = document.getElementById('sessionReport').innerText;
 
                 // Properly encode emojis and special characters
-                const encodedReport = encodeURIComponent(report);
+                const encodedReport = encodeURIComponent(report).replace(/%20/g, '+'); // WhatsApp prefers `+` for spaces
                 const whatsappUrl = `https://wa.me/?text=${encodedReport}`;
 
                 // Trigger confetti
@@ -88,6 +88,8 @@
                     origin: { y: 0.6 }
                 });
 
+                // Open the WhatsApp sharing URL
                 window.open(whatsappUrl, '_blank');
             });
+
         </script>

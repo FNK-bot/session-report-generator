@@ -23,7 +23,7 @@ const postAudioTaskReportForm = async (req, res) => {
         const user = await UserModel.findById(userId);
 
 
-        const { audioTaskOverview, submitions, tldvLink, date } = req.body;
+        const { audioTaskOverview, submitions, date } = req.body;
 
         let userDetails = await SessionModel.findOne({ userId: req.session.user_id })
 
