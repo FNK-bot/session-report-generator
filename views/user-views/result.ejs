@@ -1,17 +1,93 @@
 <%- include('./partials/header') %>
     <div class="container mt-5">
-        <h1 class="text-center mb-4">Session Report</h1>
+        <h1 class="text-center mb-4">
+            <%=title%>
+        </h1>
         <div class="bg-light p-4 rounded">
-            <pre id="sessionReport" class="bg-white p-3"><%= report %></pre>
-            <button id="copyBtn" class="btn btn-success mt-3">Copy to Clipboard</button>
+            <pre id="sessionReport" class="bg-white p-3"
+                style="word-wrap: break-word; white-space: pre-wrap;"><%= report %></pre>
+            <div class="d-flex flex-column flex-md-row justify-content-between mt-3 gap-2">
+                <button id="copyBtn" class="btn btn-success w-100">Copy to Clipboard</button>
+                <!-- <button id="shareBtn" class="btn btn-primary w-100">Share via WhatsApp</button> -->
+            </div>
         </div>
     </div>
     <%- include('./partials/footer') %>
+
         <script>
             document.getElementById('copyBtn').addEventListener('click', () => {
                 const report = document.getElementById('sessionReport').innerText;
-                navigator.clipboard.writeText(report).then(() => {
-                    alert('Report copied to clipboard!');
+
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(report).then(() => {
+                        // Trigger confetti
+                        confetti({
+                            particleCount: 100,
+                            spread: 70,
+                            origin: { y: 0.6 }
+                        });
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Copied!',
+                            text: 'The report has been copied to your clipboard.',
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+                    }).catch(() => {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Failed to copy the report. Please try again.',
+                        });
+                    });
+                } else {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = report;
+                    textarea.style.position = 'fixed';
+                    textarea.style.opacity = '0';
+                    document.body.appendChild(textarea);
+                    textarea.focus();
+                    textarea.select();
+                    try {
+                        document.execCommand('copy');
+                        // Trigger confetti
+                        confetti({
+                            particleCount: 100,
+                            spread: 70,
+                            origin: { y: 0.6 }
+                        });
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Copied!',
+                            text: 'The report has been copied to your clipboard.',
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+                    } catch (err) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Failed to copy the report. Please try again.',
+                        });
+                    }
+                    document.body.removeChild(textarea);
+                }
+            });
+
+            document.getElementById('shareBtn').addEventListener('click', () => {
+                const report = document.getElementById('sessionReport').innerText;
+
+                // Properly encode emojis and special characters
+                const encodedReport = encodeURIComponent(report);
+                const whatsappUrl = `https://wa.me/?text=${encodedReport}`;
+
+                // Trigger confetti
+                confetti({
+                    particleCount: 200,
+                    spread: 120,
+                    origin: { y: 0.6 }
                 });
+
+                window.open(whatsappUrl, '_blank');
             });
         </script>

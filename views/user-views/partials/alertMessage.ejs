@@ -1,0 +1,109 @@
+<head>
+  <style>
+    .alert-timer {
+      font-size: 0.9em;
+      color: #6c757d;
+    }
+
+    .alert-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 300px;
+      /* Medium width for the alerts */
+      z-index: 1050;
+      /* Ensure it's above other elements */
+    }
+  </style>
+
+</head>
+
+
+<div class="alert-container">
+  <% if (alertMessage) { %>
+    <% if (alertMessage.type==="success" ) { %>
+      <!-- Success Alert -->
+      <div class="alert alert-success alert-dismissible fade show" id="success-alert">
+        <strong>Success!</strong>
+        <%= alertMessage.message %>
+          <span class="alert-timer" id="success-timer"></span>
+
+      </div>
+      <% } %>
+
+        <% if (alertMessage.type==="error" ) { %>
+          <!-- Error Alert -->
+          <div class="alert alert-danger alert-dismissible fade show" id="error-alert">
+            <strong>Error!</strong>
+            <%= alertMessage.message %>
+              <span class="alert-timer" id="error-timer"></span>
+
+          </div>
+          <% } %>
+
+            <% if (alertMessage.type==="warning" ) { %>
+              <!-- Warning Alert -->
+              <div class="alert alert-warning alert-dismissible fade show" id="warning-alert">
+                <strong>Warning!</strong>
+                <%= alertMessage.message %>
+                  <span class="alert-timer" id="warning-timer"></span>
+
+              </div>
+              <% } %>
+
+                <% if (alertMessage.type==="info" ) { %>
+                  <!-- Info Alert -->
+                  <div class="alert alert-info alert-dismissible fade show" id="info-alert">
+                    <strong>Info!</strong>
+                    <%= alertMessage.message %>
+                      <span class="alert-timer" id="info-timer"></span>
+
+                  </div>
+                  <% } %>
+                    <% } %>
+</div>
+
+<script>
+  function startTimer(alertId, timerId, duration) {
+    let timeLeft = duration;
+    const timerElement = document.getElementById(timerId);
+
+    // Update the timer every second
+    const interval = setInterval(() => {
+      if (timeLeft <= 0) {
+        clearInterval(interval);
+      } else {
+        timeLeft--;
+        timerElement.textContent = ` (Closes in ${timeLeft}s)`;
+      }
+    }, 1000);
+
+    // Auto-dismiss the alert after the duration
+    setTimeout(() => {
+      const alertElement = document.getElementById(alertId);
+      if (alertElement) {
+        const alertInstance = new bootstrap.Alert(alertElement);
+        alertInstance.close();
+      }
+    }, duration * 1000); // duration in milliseconds
+  }
+
+  // Set the duration for auto-dismiss (10 seconds)
+  const duration = 10;
+
+  // Start the timer for each alert if they exist
+  <% if (alertMessage) { %>
+    <% if (alertMessage.type === "success") { %>
+      startTimer('success-alert', 'success-timer', duration);
+    <% } %>
+    <% if (alertMessage.type === "error") { %>
+      startTimer('error-alert', 'error-timer', duration);
+    <% } %>
+    <% if (alertMessage.type === "warning") { %>
+      startTimer('warning-alert', 'warning-timer', duration);
+    <% } %> 
+    <% if (alertMessage.type === "info") { %>
+      startTimer('info-alert', 'info-timer', duration);
+    <% } %>
+  <% } %>
+</script>

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-    username: {
+    userName: {
         type: String,
         required: true,
     },
@@ -10,23 +10,22 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
-    mobile: {
-        type: Number,
-        required: false,
-        sparse: true,
+    batch: {
+        type: String,
     },
-    isDetailsShared: {
+    onBoarding: {
         type: Boolean,
         required: true
     },
-    image: {
-        type: String
-    },
     googleId: {
         type: String
+    },
+    sessionDetails: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "SessionSchema"
     }
 
 });
 
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('UserSchema', userSchema);

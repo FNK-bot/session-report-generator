@@ -1,0 +1,127 @@
+<%- include('./partials/header') %>
+    <div class="container mt-5">
+        <div class="row">
+            <!-- Form Section -->
+            <div class="col-md-12">
+                <h1 class="text-center mb-4">Fill the Essentials </h1>
+                <form id="onboardingForm" action="/on-bording" method="POST" novalidate>
+                    <!-- Students -->
+                    <div class="mb-3" id="studentsContainer">
+                        <label class="form-label">Students</label>
+                        <div class="input-group mb-2">
+                            <input type="text" class="form-control student-input" name="students"
+                                placeholder="e.g., Farseen NK BCR 28" required>
+                            <button type="button" class="btn btn-success add-student">+</button>
+                        </div>
+                        <div class="form-text">Include name and batch number (e.g., Farseen NK BCR 28).</div>
+                        <div class="invalid-feedback">Please enter a valid student (e.g., Farseen NK BCR 28).</div>
+                    </div>
+
+                    <!-- Coordinators -->
+                    <div class="mb-3" id="coordinatorsContainer">
+                        <label class="form-label">Coordinators</label>
+                        <div class="input-group mb-2">
+                            <input type="text" class="form-control coordinator-input" name="coordinators"
+                                placeholder="e.g., Aslam BCR 27" required>
+                            <button type="button" class="btn btn-success add-coordinator">+</button>
+                        </div>
+                        <div class="form-text">Include name and batch number (e.g., Aslam BCR 27).</div>
+                        <div class="invalid-feedback">Please enter a valid coordinator (e.g., Aslam BCR 27).</div>
+                    </div>
+
+                    <!-- Trainer -->
+                    <div class="mb-3">
+                        <label for="trainer" class="form-label">Trainer Name</label>
+                        <input type="text" class="form-control" id="trainer" name="trainer"
+                            placeholder="e.g., Rohaan N Devesia" required>
+                        <div class="invalid-feedback">Trainer name is required.</div>
+                    </div>
+
+                    <!-- Batch -->
+                    <div class="mb-3" id="batchContainer">
+                        <label class="form-label">Batch Numbers</label>
+                        <div class="input-group mb-2">
+                            <input type="text" class="form-control batch-input" name="batch" placeholder="e.g., BCR 28"
+                                required>
+                            <button type="button" class="btn btn-success add-batch">+</button>
+                        </div>
+                        <div class="form-text">Batch format example: BCR 28.</div>
+                        <div class="invalid-feedback">Please enter a valid batch (e.g., BCR 28).</div>
+                    </div>
+
+                    <!-- Start Time -->
+                    <div class="mb-3">
+                        <label for="startTime" class="form-label">Start Time</label>
+                        <input type="time" class="form-control" id="startTime" name="startTime" required>
+                        <div class="invalid-feedback">Start time is required.</div>
+                    </div>
+
+                    <!-- End Time -->
+                    <div class="mb-3">
+                        <label for="endTime" class="form-label">End Time</label>
+                        <input type="time" class="form-control" id="endTime" name="endTime" required>
+                        <div class="invalid-feedback">End time is required.</div>
+                    </div>
+
+
+
+                    <button type="submit" class="btn btn-primary w-100">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <%- include('./partials/footer') %>
+
+
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                // Add and remove dynamic inputs for students
+                document.querySelector(".add-student").addEventListener("click", () => {
+                    const container = document.getElementById("studentsContainer");
+                    const newInput = `
+            <div class="input-group mb-2">
+                <input type="text" class="form-control student-input" name="students" placeholder="e.g.,Mammen Mathew BCR 28" required>
+                <button type="button" class="btn btn-danger remove-student">-</button>
+            </div>`;
+                    container.insertAdjacentHTML("beforeend", newInput);
+                });
+
+                document.querySelector(".add-coordinator").addEventListener("click", () => {
+                    const container = document.getElementById("coordinatorsContainer");
+                    const newInput = `
+            <div class="input-group mb-2">
+                <input type="text" class="form-control coordinator-input" name="coordinators" placeholder="e.g., Aslam BCR 27" required>
+                <button type="button" class="btn btn-danger remove-coordinator">-</button>
+            </div>`;
+                    container.insertAdjacentHTML("beforeend", newInput);
+                });
+
+                document.querySelector(".add-batch").addEventListener("click", () => {
+                    const container = document.getElementById("batchContainer");
+                    const newInput = `
+            <div class="input-group mb-2">
+                <input type="text" class="form-control batch-input" name="batch" placeholder="e.g., BCR 28" required>
+                <button type="button" class="btn btn-danger remove-batch">-</button>
+            </div>`;
+                    container.insertAdjacentHTML("beforeend", newInput);
+                });
+
+                // Remove input rows
+                document.addEventListener("click", (e) => {
+                    if (e.target.classList.contains("remove-student")) e.target.parentElement.remove();
+                    if (e.target.classList.contains("remove-coordinator")) e.target.parentElement.remove();
+                    if (e.target.classList.contains("remove-batch")) e.target.parentElement.remove();
+                });
+
+                // Bootstrap validation
+                const form = document.getElementById("onboardingForm");
+                form.addEventListener("submit", (event) => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add("was-validated");
+                });
+            });
+
+        </script>

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const userModel = require('./userModel');
 
 
 const sessionSchema = new mongoose.Schema({
@@ -7,7 +8,7 @@ const sessionSchema = new mongoose.Schema({
         type: Array,
         required: true
     },
-    cordinators: {
+    coordinators: {
         type: Array,
         required: true
     },
@@ -16,17 +17,21 @@ const sessionSchema = new mongoose.Schema({
         required: true
     },
     batch: {
-        type: Number,
+        type: Array,
         required: true
     },
-    startTiming: {
-        type: Number,
+    startTime: {
+        type: String,
         required: true
     },
-    endTiming: {
-        type: Number,
+    endTime: {
+        type: String,
         required: true
-    }
+    }, userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "UserSchema"
+
+    },
 
 });
-module.exports = mongoose.model('SessionSchema', userSchema);
+module.exports = mongoose.model('SessionSchema', sessionSchema);

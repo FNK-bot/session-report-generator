@@ -5,10 +5,20 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const nocache = require('nocache');
 const dotenv = require('dotenv');
+const db = require('./config/db');
+const session = require('express-session');
+const passport = require('./config/passport');
+
 
 //configuring .env
 dotenv.config();
 
+const adminRouter = require('./routes/admin');
+const usersRouter = require('./routes/user');
+
+const app = express();
+
+db()
 
 app.use(session({
   secret: 'secret',
@@ -22,17 +32,13 @@ app.use(session({
 );
 
 //Passport for Oauth (google login)
-// app.use(passport.initialize())
+app.use(passport.initialize())
 
 app.use(passport.session())
 
 //Setting no cache 
 app.use(nocache())
 
-const adminRouter = require('./routes/admin');
-const usersRouter = require('./routes/user');
-
-const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -60,7 +66,8 @@ app.use(function (err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render('404');
 });
+
 
 module.exports = app;

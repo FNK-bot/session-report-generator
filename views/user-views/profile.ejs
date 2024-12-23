@@ -1,0 +1,81 @@
+<%- include('./partials/header') %>
+    <%- include('./partials/alertMessage') %>
+
+        <div class="container mt-5">
+
+            <!-- Edit User Modal -->
+            <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content shadow-lg border-0">
+                        <div class="modal-header bg-primary text-white">
+                            <h5 class="modal-title" id="editUserModalLabel">Edit User Details</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="editUserForm" action="edit-user" method="post">
+                                <div class="mb-3">
+                                    <label for="userName" class="form-label">Name</label>
+                                    <input type="text" class="form-control shadow-sm" id="userName" name="userName"
+                                        value="<%= user.userName %>" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control shadow-sm" id="email" name="email"
+                                        value="<%= user.email %>" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="batch" class="form-label">Batch</label>
+                                    <input type="text" class="form-control shadow-sm" id="batch" name="batch"
+                                        value="<%= user?.batch %>">
+                                </div>
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-primary shadow">Update</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Profile Section -->
+            <h1 class="text-center mb-5">User Profile</h1>
+
+            <div class="card shadow border-0">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center mb-3">
+
+                        <div>
+                            <h3 class="card-title mb-1">Welcome, <strong>
+                                    <%= user.userName %>
+                                </strong></h3>
+                            <p class="card-text text-muted mb-0">
+                                <strong>Email:</strong>
+                                <%= user.email %><br>
+                                    <strong>Batch:</strong>
+                                    <%= user.batch ? user.batch : 'Please update your batch' %>
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="d-flex justify-content-start gap-3 mt-4">
+                        <button type="button" class="btn btn-primary d-flex align-items-center" data-bs-toggle="modal"
+                            data-bs-target="#editUserModal">
+                            <i class="bi bi-pencil me-2"></i>Edit User Details
+                        </button>
+
+                        <a href="/edit-session-details" class="btn btn-success d-flex align-items-center">
+                            <i class="bi bi-gear me-2"></i>Edit Session Details
+                        </a>
+
+                        <a href="/logout" class="btn btn-danger d-flex align-items-center">
+                            <i class="bi bi-box-arrow-right me-2"></i>Logout
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <%- include('./partials/footer') %>

@@ -1,0 +1,137 @@
+<%- include('./partials/header') %>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-12">
+                <h1 class="text-center mb-4">Edit Essentials</h1>
+            </div>
+            <div class="col-12">
+                <form id="onboardingForm" action="/edit-session-details" method="POST" novalidate>
+                    <!-- Students -->
+                    <div id="studentsContainer" class="mb-4">
+                        <label class="form-label">Students</label>
+                        <% if (sessionDetails.students.length> 0) { %>
+                            <% sessionDetails.students.forEach((student, index)=> { %>
+                                <div class="input-group mb-2">
+                                    <input type="text" class="form-control student-input" name="students"
+                                        placeholder="e.g., Farseen NK BCR 28" value="<%= student %>" required>
+                                    <button type="button" class="btn btn-danger remove-student">-</button>
+                                </div>
+                                <% }) %>
+                                    <% } else { %>
+                                        <div class="input-group mb-2">
+                                            <input type="text" class="form-control student-input" name="students"
+                                                placeholder="e.g., Farseen NK BCR 28" required>
+                                            <button type="button" class="btn btn-danger remove-student">-</button>
+                                        </div>
+                                        <% } %>
+                                            <button type="button" class="btn btn-success add-student w-100 mt-2">Add
+                                                Student</button>
+                    </div>
+
+                    <!-- Coordinators -->
+                    <div id="coordinatorsContainer" class="mb-4">
+                        <label class="form-label">Coordinators</label>
+                        <% if (sessionDetails.coordinators.length> 0) { %>
+                            <% sessionDetails.coordinators.forEach((coordinator)=> { %>
+                                <div class="input-group mb-2">
+                                    <input type="text" class="form-control coordinator-input" name="coordinators"
+                                        placeholder="e.g., Aslam BCR 27" value="<%= coordinator %>" required>
+                                    <button type="button" class="btn btn-danger remove-coordinator">-</button>
+                                </div>
+                                <% }) %>
+                                    <% } else { %>
+                                        <div class="input-group mb-2">
+                                            <input type="text" class="form-control coordinator-input"
+                                                name="coordinators" placeholder="e.g., Aslam BCR 27" required>
+                                            <button type="button" class="btn btn-danger remove-coordinator">-</button>
+                                        </div>
+                                        <% } %>
+                                            <button type="button" class="btn btn-success add-coordinator w-100 mt-2">Add
+                                                Coordinator</button>
+                    </div>
+
+                    <!-- Trainer -->
+                    <div class="mb-3">
+                        <label for="trainer" class="form-label">Trainer Name</label>
+                        <input type="text" class="form-control" id="trainer" name="trainer"
+                            placeholder="e.g., Rohaan N Devesia" value="<%= sessionDetails.trainer %>" required>
+                    </div>
+
+                    <!-- Batch -->
+                    <div id="batchContainer" class="mb-4">
+                        <label class="form-label">Batch</label>
+                        <% if (sessionDetails.batch.length> 0) { %>
+                            <% sessionDetails.batch.forEach((batch)=> { %>
+                                <div class="input-group mb-2">
+                                    <input type="text" class="form-control batch-input" name="batch"
+                                        placeholder="e.g., BCR 28" value="<%= batch %>" required>
+                                    <button type="button" class="btn btn-danger remove-batch">-</button>
+                                </div>
+                                <% }) %>
+                                    <% } else { %>
+                                        <div class="input-group mb-2">
+                                            <input type="text" class="form-control batch-input" name="batch"
+                                                placeholder="e.g., BCR 28" required>
+                                            <button type="button" class="btn btn-danger remove-batch">-</button>
+                                        </div>
+                                        <% } %>
+                                            <button type="button" class="btn btn-success add-batch w-100 mt-2">Add
+                                                Batch</button>
+                    </div>
+
+                    <!-- Times -->
+                    <div class="mb-3">
+                        <label for="startTime" class="form-label">Start Time</label>
+                        <input type="time" class="form-control" id="startTime" name="startTime"
+                            value="<%= sessionDetails.startTime %>" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="endTime" class="form-label">End Time</label>
+                        <input type="time" class="form-control" id="endTime" name="endTime"
+                            value="<%= sessionDetails.endTime %>" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">Submit</button>
+                    <button type="button" class="btn btn-warning w-100 mt-2" onclick="history.back()">Back</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <%- include('./partials/footer') %>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                // Add dynamic input handling for all sections
+                ["student", "coordinator", "batch"].forEach((type) => {
+                    const addButtonClass = `.add-${type}`;
+                    const removeButtonClass = `.remove-${type}`;
+                    const containerId = `#${type}sContainer`;
+
+                    document.querySelector(containerId).addEventListener("click", (e) => {
+                        if (e.target.matches(addButtonClass)) {
+                            const newInput = `
+                        <div class="input-group mb-2">
+                            <input type="text" class="form-control ${type}-input" name="${type}s" 
+                                 required>
+                            <button type="button" class="btn btn-danger remove-${type}">-</button>
+                        </div>`;
+                            e.target.insertAdjacentHTML("beforebegin", newInput);
+                        } else if (e.target.matches(removeButtonClass)) {
+                            if (e.target.parentElement.length !== 0) {
+                                e.target.parentElement.remove();
+                            }
+                        }
+                    });
+                });
+
+                // Form validation
+                const form = document.getElementById("onboardingForm");
+                form.addEventListener("submit", (event) => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add("was-validated");
+                });
+            });
+        </script>
